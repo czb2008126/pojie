@@ -1,0 +1,26 @@
+夸克网盘自动备份 - 配置说明
+================================
+
+备份数据目录（NAS 系统路径，不在 File Station 共享列表显示）:
+/share/CACHEDEV1_DATA/backup
+
+查看管理员密码:
+SSH 登录 NAS 后执行:
+  cat /share/CACHEDEV1_DATA/backup/credentials.txt
+
+完整配置说明:
+/share/CACHEDEV1_DATA/backup/README.md
+
+AList 管理页:
+http://192.168.5.5:5244
+
+备份脚本:
+/share/CACHEDEV1_DATA/backup/scripts/quark_backup.sh
+
+日志目录:
+/share/CACHEDEV1_DATA/backup/logs/
+
+夸克 Cookie 备份文件:
+/share/CACHEDEV1_DATA/backup/alist/data/quark_cookie.txt
+
+定时任务: 每天 02:30 自动执行。
