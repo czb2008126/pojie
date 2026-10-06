@@ -263,9 +263,15 @@ async function checkClaude() {
   msg += "说明：网页可访问 ≠ 已登录账号一定可用；";
   msg += "Gemini/AI Studio/Antigravity 最终权限仍可能受账号、套餐及地区策略影响。";
 
-  $notify("🤖 AI 服务解锁查询", countryText, msg);
-  $done();
+  // event-interaction 必须返回有效内容给 Quantumult X。
+  // 如果只调用 $notify() 再 $done()，Quantumult X 会额外弹出“无有效内容”。
+  $done({
+    title: "🤖 AI 服务解锁查询",
+    content: countryText + "\n" + msg
+  });
 })().catch(err => {
-  $notify("🤖 AI 服务解锁查询", "检测失败", String(err));
-  $done();
+  $done({
+    title: "🤖 AI 服务解锁查询",
+    content: "❌ 检测失败\n" + String(err)
+  });
 });
