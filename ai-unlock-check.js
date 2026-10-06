@@ -24,6 +24,9 @@ function request(url, opts = {}) {
   const req = {
     url,
     method: opts.method || "GET",
+    opts: {
+      policy: (typeof $environment !== "undefined" && $environment.params) ? $environment.params : undefined
+    },
     headers: Object.assign({
       "User-Agent": UA,
       "Accept": "*/*",
@@ -263,15 +266,30 @@ async function checkClaude() {
   msg += "说明：网页可访问 ≠ 已登录账号一定可用；";
   msg += "Gemini/AI Studio/Antigravity 最终权限仍可能受账号、套餐及地区策略影响。";
 
-  // event-interaction 必须返回有效内容给 Quantumult X。
-  // 如果只调用 $notify() 再 $done()，Quantumult X 会额外弹出“无有效内容”。
+  // Quantumult X event-interaction 的弹窗正文需要使用 htmlMessage。
+  // title + content 会被部分版本判定为“无有效内容”。
+  const html =
+    '<p style="font-family:-apple-system;font-size:17px;line-height:1.55">' +
+    msg
+      .replace(/&/g, "&amp;")
+      .replace(/</g, "&lt;")
+      .replace(/>/g, "&gt;")
+      .replace(/\n/g, "<br>") +
+    '</p>';
+
   $done({
     title: "🤖 AI 服务解锁查询",
-    content: countryText + "\n" + msg
+    htmlMessage: html
   });
 })().catch(err => {
   $done({
     title: "🤖 AI 服务解锁查询",
-    content: "❌ 检测失败\n" + String(err)
+    htmlMessage:
+      '<p style="font-family:-apple-system;font-size:17px">❌ 检测失败<br>' +
+      String(err)
+        .replace(/&/g, "&amp;")
+        .replace(/</g, "&lt;")
+        .replace(/>/g, "&gt;") +
+      '</p>'
   });
 });
